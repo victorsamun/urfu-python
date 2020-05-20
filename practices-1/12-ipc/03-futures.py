@@ -2,7 +2,7 @@
 
 import time
 import sys
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
 
 def calc_sum(k, n):
@@ -21,7 +21,10 @@ def calc_sum(k, n):
 
 t0 = time.perf_counter()
 
-with ThreadPoolExecutor(max_workers=8) as pool:
+# Executor = ThreadPoolExecutor
+Executor = ProcessPoolExecutor
+
+with Executor(max_workers=8) as pool:
     futures = [pool.submit(calc_sum, i, 8) for i in range(8)]
     s = sum(f.result() for f in futures)
 
